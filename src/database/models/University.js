@@ -27,6 +27,8 @@ UniversitySchema.statics.typeZero = async (kor, eng, his, math, society, science
     // avg 구해서 함수 통과시키기
     const university = await University.find({ type: 0 })
         .then((document) => {
+            console.log('type0');
+            console.log()
             return document.map(doc => {
                 const avg = (kor * doc.weight[0] + eng * doc.weight[1] +
                     his * doc.weight[2] + math * doc.weight[3] + society * doc.weight[4] + science * doc.weight[5] + select * doc.weight[6]) /
@@ -56,6 +58,7 @@ UniversitySchema.statics.typeOne = async (kor, eng, his, math, society, science,
     let scores = [kor, eng, math, society, science, his, select];
     const university = await University.find({ type: 1 })
         .then((document) => {
+            console.log('type1');
             return document.map(univ => {
                 let hab = 0, idx = 0;
 
@@ -97,6 +100,7 @@ UniversitySchema.statics.typeTwo = async (kor, eng, his, math, society, science,
     let scores = [kor, eng, math, society, science, his, select];
     const university = await University.find({ type: 2 })
         .then((document) => {
+            console.log('type2');
             return document.map(univ => {
                 let thisScores = scores.map(score => score);
                 let hab = 0, weightHab = 0;
@@ -138,6 +142,7 @@ UniversitySchema.statics.typeThree = async (kor, eng, his, math, society, scienc
 
     const university = await University.find({ type: 3 })
         .then((document) => {
+
             return document.map(univ => {
                 let gradeSum = 0, weightSum = 0;
                 let grade = scores.map(score => {
@@ -177,6 +182,7 @@ UniversitySchema.statics.typeFour = async function (kor = null, eng = null, his 
     let scores = [kor, eng, math, his, society, science, select];
     const university = await University.find({type:4})
         .then((document) => {
+
             return document.map(univ => {
                 let hab = 0, weightHab = 0, thisScores = scores.map(x=>x);
                 // weight 곱하기 + type 4니까 avg grade ㄱㄱ
@@ -220,6 +226,7 @@ UniversitySchema.statics.typeFive = async function (kor = null, eng = null, his 
     // avg 구해서 함수 통과시키기
     const university = await University.find({ type: 5 })
         .then((document) => {
+
             return document.map(doc => {
                 const totalWeightedScore = (kor * doc.weight[0] + eng * doc.weight[1] +
                     his * doc.weight[2] + math * doc.weight[3] + society * doc.weight[4] + science * doc.weight[5] + select * doc.weight[6]);

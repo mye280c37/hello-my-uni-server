@@ -20,3 +20,4 @@ app.use(routes.api, apiRouter);
 export default app;
 
 console.log('Server running at localhost');
+
