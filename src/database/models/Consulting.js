@@ -36,7 +36,7 @@ const ConsultingSchema = new mongoose.Schema({
     key: { type: String, required: true },
     name: { type: String, required: true },
     age: { type: Number, required: true },
-    gender: String, // 'm' or 'w'
+    gender: { type: String }, // 'm' or 'w'
     scores: {
       korean: Number,
       english: Number,
@@ -47,7 +47,9 @@ const ConsultingSchema = new mongoose.Schema({
       choice: Number
     },
     average: { type: Number, required: true },
+    option: { type: String, required:true }, // '0', '1', '2', '3'
     application: { type: String, required: true }, // '0', '1', '2', '3', '4',
+    description: { type: String, default: '' },
     application_reason: { type: String, required: true },
     hope: {
       '1': { uni: String, major: String },

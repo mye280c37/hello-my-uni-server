@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-const MONGO_URI='mongodb://localhost/database';
-
+// const MONGO_URI='mongodb://localhost/database';
 dotenv.config();
 
   // Node.js의 native Promise 사용
   mongoose.Promise = global.Promise;
 
-  mongoose.connect(MONGO_URI,{
+  mongoose.connect(process.env.MONGO_URI,{
+      dbName: 'MyUniDataBase',
       useNewUrlParser: true, 
       useUnifiedTopology: true, 
       useCreateIndex: true, 

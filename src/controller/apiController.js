@@ -142,7 +142,7 @@ export async function postReviewPost(req, res) {
 }
 
 
-export async function getReviewPost(req, res) {
+export async function getReviewRead(req, res) {
     const {
         id
     } = req.query;
@@ -164,6 +164,9 @@ export async function getReviewPost(req, res) {
     name: '이름',
     age: 17,
     gender: 'm',
+    option: '0',
+    application: '0',
+    description: '',
     scores: {
       korean: 34,
       english: 56,
@@ -174,7 +177,6 @@ export async function getReviewPost(req, res) {
       choice: 94
     },
     average: 86,
-    application: '0',
     application_reason: '어쩌구 저쩌구',
     hope: {
       '1': { uni: '대학1', major: '전공1' },
@@ -195,9 +197,11 @@ export async function postConsultingSave(req, res) {
     const {
         key,
         name, age, gender, 
+        option,
+        application, description,
         scores, // { 'korean', 'english', 'math', 'society', 'science', 'history', 'choice' }
         average, 
-        application, application_reason, 
+        application_reason, 
         hope, // {'uni', 'major'} 6개
         note, date_time, // date_time: 'yyyy-MM-dd HH:mm-HH:mm'
         check, account
@@ -205,7 +209,7 @@ export async function postConsultingSave(req, res) {
 
     console.log(req.body);
 
-    const newConsulting = new Consulting({ key, name, age, gender, scores, average, application, application_reason, hope, note, date_time, check, account });
+    const newConsulting = new Consulting({ key, name, age, gender, option, application, description, scores, average, application_reason, hope, note, date_time, check, account });
     newConsulting.save((err) => {
         if (err) {
             console.log(err);
