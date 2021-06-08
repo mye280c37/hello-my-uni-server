@@ -8,7 +8,7 @@ dotenv.config();
   mongoose.Promise = global.Promise;
 
   mongoose.connect(process.env.MONGO_URI,{
-      dbName: 'MyUniDataBase',
+      dbName: 'MyUnidb',
       useNewUrlParser: true, 
       useUnifiedTopology: true, 
       useCreateIndex: true, 
