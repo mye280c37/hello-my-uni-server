@@ -89,7 +89,7 @@ export async function getConversion(req, res) {
     
     let result = [];
 
-	res.set("Access-Control-Allow-Origin", "*");
+	res.set("Access-Control-Allow-Origin", req.getHeader("origin"));
     res.set("Access-Control-Allow-Credentials", "true");
     res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
     res.set("Access-Control-Max-Age", "3600");
