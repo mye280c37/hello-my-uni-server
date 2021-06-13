@@ -209,6 +209,14 @@ export async function postConsultingSave(req, res) {
 
     console.log(req.body);
 
+    res.set("Access-Control-Allow-Origin", '*');
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res.set("Access-Control-Max-Age", "3600");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    res.set("Content-Type", "application/json");
+    res.set("Accept", "application/json");
+
     const newConsulting = new Consulting({ key, name, age, gender, option, application, description, scores, average, application_reason, hope, note, date_time, check, account });
     newConsulting.save((err) => {
         if (err) {
@@ -225,9 +233,18 @@ export async function postConsultingSave(req, res) {
 }
 
 export async function getConsultingBoard(req, res) {
+    res.set("Access-Control-Allow-Origin", '*');
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res.set("Access-Control-Max-Age", "3600");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    res.set("Content-Type", "application/json");
+    res.set("Accept", "application/json");
+    
     try {
         const result = await Consulting.find({});
         const message = "success";
+        
         return res.json({
             result,
             message

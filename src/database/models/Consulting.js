@@ -62,7 +62,9 @@ const ConsultingSchema = new mongoose.Schema({
     note: { type: String, default: ''},
     date_time: { type: String, required: true }, // yyyy-MM-dd HH:mm-HH:mm
     check: { type: Number, required: true }, // 1
-    account: String
+    account: { type: String, required: true },
+    comment: { type: String, default:'' },
+    payment: { type: Boolean, default: false }
 });
 
 ConsultingSchema.methods.findOrCreate = (key, name, age, gender, scores, average, application, application_reason, hope, note, date_time, check, account) => {
