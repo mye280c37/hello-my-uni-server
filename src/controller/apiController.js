@@ -2,6 +2,7 @@ import University from '../database/models/University';
 import Video from '../database/models/Video';
 import Review from '../database/models/Review';
 import Consulting from '../database/models/Consulting';
+import Manager from '../database/models/Manager';
 
 import unis from './converter/universities';
 
@@ -250,6 +251,31 @@ export async function getConsultingBoard(req, res) {
             message
         });
     } catch (error){
+        console.log(error);
+        return res.json({
+            message: "fail"
+        });
+    };
+}
+
+export async function getAdminCode(req, res){
+    res.set("Access-Control-Allow-Origin", '*');
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res.set("Access-Control-Max-Age", "3600");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    res.set("Content-Type", "application/json");
+    res.set("Accept", "application/json");
+
+    try {
+        const result = await Manager.find({});
+        const message = "success";
+
+        return res.json({
+            result,
+            message
+        });
+    }catch (error){
         console.log(error);
         return res.json({
             message: "fail"
