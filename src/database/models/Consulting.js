@@ -37,6 +37,8 @@ const ConsultingSchema = new mongoose.Schema({
     name: { type: String, required: true },
     age: { type: Number, required: true },
     gender: { type: String }, // 'm' or 'w'
+    email: {type: String, required: true},
+    phone: {type: String, required: true},
     scores: {
       korean: Number,
       english: Number,

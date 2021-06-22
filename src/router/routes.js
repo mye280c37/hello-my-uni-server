@@ -18,7 +18,7 @@ const UNI_INFO_UPDATE = "/university/info/update";
 
 // Save Consulting Request
 const CONSULTING_SAVE = "/consulting/save"
-const CONSULTING_board = "/consulting/board"
+const CONSULTING_BOARD = "/consulting/board"
 
 const routes = {
     home: HOME,
@@ -37,7 +37,7 @@ const routes = {
     uni_info_update: UNI_INFO_UPDATE,
 
     consulting_save: CONSULTING_SAVE,
-    consulting_board: CONSULTING_board
+    consulting_board: CONSULTING_BOARD
 };
 
 export default routes; 

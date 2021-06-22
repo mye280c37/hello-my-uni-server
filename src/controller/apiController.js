@@ -196,7 +196,7 @@ export async function getReviewRead(req, res) {
 export async function postConsultingSave(req, res) {
     const {
         key,
-        name, age, gender, 
+        name, age, gender, email, phone,
         option,
         application, description,
         scores, // { 'korean', 'english', 'math', 'society', 'science', 'history', 'choice' }
@@ -217,7 +217,7 @@ export async function postConsultingSave(req, res) {
     res.set("Content-Type", "application/json");
     res.set("Accept", "application/json");
 
-    const newConsulting = new Consulting({ key, name, age, gender, option, application, description, scores, average, application_reason, hope, note, date_time, check, account });
+    const newConsulting = new Consulting({ key, name, age, gender, email, phone, option, application, description, scores, average, application_reason, hope, note, date_time, check, account });
     newConsulting.save((err) => {
         if (err) {
             console.log(err);
