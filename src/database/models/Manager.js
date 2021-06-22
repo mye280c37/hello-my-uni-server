@@ -27,7 +27,7 @@ ManagerSchema.methods.findAll = (type) => {
     return Manager.find({type});
 }
 
-const Manager = mongoose.model("Manager", BoardSchema);
+const Manager = mongoose.model("Manager", ManagerSchema);
 
 export default Manager;
 
