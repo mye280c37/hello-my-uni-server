@@ -6,6 +6,11 @@ import Manager from '../database/models/Manager';
 
 import unis from './converter/universities';
 
+import dotenv from 'dotenv';
+
+// const MONGO_URI='mongodb://localhost/database';
+dotenv.config();
+
 // 국 영 수 사회 과학 역사 선택
 function str_to_int(req) {
      const {
@@ -258,7 +263,7 @@ export async function getConsultingBoard(req, res) {
     };
 }
 
-export async function getAdminCode(req, res){
+export async function getCheckAdmin1Code(req, res){
     res.set("Access-Control-Allow-Origin", '*');
     res.set("Access-Control-Allow-Credentials", "true");
     res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
@@ -267,18 +272,49 @@ export async function getAdminCode(req, res){
     res.set("Content-Type", "application/json");
     res.set("Accept", "application/json");
 
-    try {
-        const result = await Manager.find({});
-        const message = "success";
-
+    if(req.query.key == process.env.ADMIN1){
         return res.json({
-            result,
-            message
+            message: "success"
         });
-    }catch (error){
-        console.log(error);
+    }else{
         return res.json({
             message: "fail"
         });
-    };
+    }
+
+    // try {
+    //     const result = await Manager.find({});
+    //     const message = "success";
+
+    //     return res.json({
+    //         result,
+    //         message
+    //     });
+    // }catch (error){
+    //     console.log(error);
+    //     return res.json({
+    //         message: "fail"
+    //     });
+    // };
+}
+
+
+export async function getCheckAdmin2Code(req, res){
+    res.set("Access-Control-Allow-Origin", '*');
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res.set("Access-Control-Max-Age", "3600");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    res.set("Content-Type", "application/json");
+    res.set("Accept", "application/json");
+
+    if(req.query.key == process.env.ADMIN2){
+        return res.json({
+            message: "success"
+        });
+    }else{
+        return res.json({
+            message: "fail"
+        });
+    }
 }
