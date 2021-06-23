@@ -223,7 +223,24 @@ export async function postConsultingSave(req, res) {
     res.set("Content-Type", "application/json");
     res.set("Accept", "application/json");
 
-    const newConsulting = new Consulting({ key, name, age, gender, email, phone, option, application, description, scores, average, application_reason, hope, note, date_time, check, account });
+    const newConsulting = new Consulting({ 
+        key: key, 
+        name: name, 
+        age: age, 
+        gender: gender, 
+        email: email, 
+        phone: phone, 
+        option: option, 
+        application: application, 
+        description: description, 
+        scores: scores, 
+        average: average, 
+        application_reason: application_reason, 
+        hope: hope, 
+        note: note, 
+        date_time: date_time, 
+        check: check, 
+        account: account });
     newConsulting.save((err) => {
         if (err) {
             console.log(err);
@@ -261,6 +278,34 @@ export async function getConsultingBoard(req, res) {
             message: "fail"
         });
     };
+}
+
+export async function postConsultingUpdate(req, res) {
+    const {
+        id, comment, payment
+    } = req.body;
+
+    console.log(req.body);
+
+    res.set("Access-Control-Allow-Origin", '*');
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res.set("Access-Control-Max-Age", "3600");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    res.set("Content-Type", "application/json");
+    res.set("Accept", "application/json");
+
+    try{
+        await Consulting.updateOne({ _id: id }, { comment: comment, payment: payment });
+        return res.status(200).json({
+            message: "success"
+        });
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            message: "fail"
+        });
+    }
 }
 
 export async function getCheckAdmin1Code(req, res){

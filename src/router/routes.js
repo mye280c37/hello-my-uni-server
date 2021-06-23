@@ -17,8 +17,9 @@ const UNIVERSITY = "/university";
 const UNI_INFO_UPDATE = "/university/info/update";
 
 // Save Consulting Request
-const CONSULTING_SAVE = "/consulting/save";
+const CONSULTING_CREATE = "/consulting/create";
 const CONSULTING_BOARD = "/consulting/board";
+const CONSULTING_UPDATE = "/consulting/update";
 
 const CHECK_ADMIN1 = "/admin1/code";
 const CHECK_ADMIN2 = "/admin2/code";
@@ -39,8 +40,9 @@ const routes = {
     university: UNIVERSITY,
     uni_info_update: UNI_INFO_UPDATE,
 
-    consulting_save: CONSULTING_SAVE,
+    consulting_create: CONSULTING_CREATE,
     consulting_board: CONSULTING_BOARD,
+    consulting_update: CONSULTING_UPDATE,
 
     check_admin1: CHECK_ADMIN1,
     check_admin2: CHECK_ADMIN2
