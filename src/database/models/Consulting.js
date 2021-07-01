@@ -37,7 +37,6 @@ const ConsultingSchema = new mongoose.Schema({
     name: { type: String, required: true },
     age: { type: Number, required: true },
     gender: { type: String }, // 'm' or 'w'
-    email: {type: String, required: true},
     phone: {type: String, required: true},
     scores: {
       korean: Number,
@@ -49,8 +48,8 @@ const ConsultingSchema = new mongoose.Schema({
       choice: Number
     },
     average: { type: Number, required: true },
-    option: { type: String, required:true }, // '0', '1', '2', '3'
-    application: { type: String, required: true }, // '0', '1', '2', '3', '4',
+    option: { type: String, required:true }, // '/' 으로 항목 연결
+    application: { type: String, required: true }, // '/' 으로 항목 연결
     description: { type: String, default: '' },
     application_reason: { type: String, required: true },
     hope: {

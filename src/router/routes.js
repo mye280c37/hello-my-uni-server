@@ -24,6 +24,8 @@ const CONSULTING_UPDATE = "/consulting/update";
 const CHECK_ADMIN1 = "/admin1/code";
 const CHECK_ADMIN2 = "/admin2/code";
 
+const IMAGE_UPLOAD = "/upload";
+
 const routes = {
     home: HOME,
 
@@ -45,7 +47,9 @@ const routes = {
     consulting_update: CONSULTING_UPDATE,
 
     check_admin1: CHECK_ADMIN1,
-    check_admin2: CHECK_ADMIN2
+    check_admin2: CHECK_ADMIN2,
+
+    image_upload: IMAGE_UPLOAD
 };
 
 export default routes; 

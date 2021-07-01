@@ -1,6 +1,10 @@
 import express from 'express';
 import routes from './routes';
-import {getEduVideo, getConversion, getReviewBoard, postReviewPost , getReviewRead, postConsultingSave, getConsultingBoard, postConsultingUpdate, getUpdateUni, getCheckAdmin1Code, getCheckAdmin2Code} from '../controller/apiController';
+import { getEduVideo, getUpdateUni, getConversion } from '../controller/apiController';
+import { getReviewBoard, postReviewPost , getReviewRead } from '../controller/apiController';
+import { postConsultingSave, getConsultingBoard, postConsultingUpdate } from '../controller/apiController';
+import { getCheckAdmin1Code, getCheckAdmin2Code} from '../controller/apiController';
+import { imageUpload } from '../controller/uploadImage';
 import 'mongoose-function';
 
 // '/api/'로 시작
@@ -23,5 +27,7 @@ apiRouter.post(routes.consulting_update, postConsultingUpdate);
 
 apiRouter.get(routes.check_admin1, getCheckAdmin1Code);
 apiRouter.get(routes.check_admin2, getCheckAdmin2Code);
+
+apiRouter.post(routes.image_upload, imageUpload);
 
 export default apiRouter;

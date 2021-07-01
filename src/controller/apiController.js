@@ -202,7 +202,7 @@ export async function getReviewRead(req, res) {
 export async function postConsultingSave(req, res) {
     const {
         key,
-        name, age, gender, email, phone,
+        name, age, gender, phone,
         option,
         application, description,
         scores, // { 'korean', 'english', 'math', 'society', 'science', 'history', 'choice' }
@@ -228,7 +228,6 @@ export async function postConsultingSave(req, res) {
         name: name, 
         age: age, 
         gender: gender, 
-        email: email, 
         phone: phone, 
         option: option, 
         application: application, 
