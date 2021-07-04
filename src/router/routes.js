@@ -15,7 +15,7 @@ const REVIEW_READ = "/review/read";
 const CONVERTER = "/converter";
 const UNIVERSITY = "/university";
 const UNI_INFO_UPDATE = "/university/info/update";
-const UNI_BOARD = "/universiy/board";
+const UNI_BOARD = "/university/board";
 
 // Save Consulting Request
 const CONSULTING_CREATE = "/consulting/create";
