@@ -1,6 +1,6 @@
 import express from 'express';
 import routes from './routes';
-import { getEduVideo, getUpdateUni, getConversion } from '../controller/apiController';
+import { getEduVideo, getUpdateUni, getUniBoard, getConversion } from '../controller/apiController';
 import { getReviewBoard, postReviewPost , getReviewRead } from '../controller/apiController';
 import { postConsultingSave, getConsultingBoard, postConsultingUpdate } from '../controller/apiController';
 import { getCheckAdmin1Code, getCheckAdmin2Code} from '../controller/apiController';
@@ -13,6 +13,7 @@ const apiRouter = express.Router();
 
 apiRouter.get(routes.each_converter, getConversion);
 apiRouter.get(routes.uni_info_update, getUpdateUni);
+apiRouter.get(routes.uni_board, getUniBoard);
 
 apiRouter.get(routes.edu_video, getEduVideo);
 apiRouter.get(routes.review_board, getReviewBoard);

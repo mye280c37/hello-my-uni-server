@@ -85,6 +85,22 @@ export async function getUpdateUni(req, res) {
     };
 }
 
+export async function getUniBoard(req, res) {
+    try {
+        const result = await University.find({});
+        const message = "Get UniversityBoard Success";
+        return res.json({
+            result,
+            message
+        });
+    } catch (error){
+        console.log(error);
+        return res.json({
+            message: "Get UniversityBoard Fail"
+        });
+    };
+}
+
 // http://127.0.0.1:5000/api/converter/each?korean=34&english=56&math=88&society=98&science=89&history=90&choice=97&status=0
 
 export async function getConversion(req, res) {

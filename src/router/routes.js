@@ -15,6 +15,7 @@ const REVIEW_READ = "/review/read";
 const CONVERTER = "/converter";
 const UNIVERSITY = "/university";
 const UNI_INFO_UPDATE = "/university/info/update";
+const UNI_BOARD = "/universiy/board";
 
 // Save Consulting Request
 const CONSULTING_CREATE = "/consulting/create";
@@ -41,6 +42,7 @@ const routes = {
     converter: CONVERTER,
     university: UNIVERSITY,
     uni_info_update: UNI_INFO_UPDATE,
+    uni_board: UNI_BOARD,
 
     consulting_create: CONSULTING_CREATE,
     consulting_board: CONSULTING_BOARD,
