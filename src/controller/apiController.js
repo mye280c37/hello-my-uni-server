@@ -4,9 +4,10 @@ import Review from '../database/models/Review';
 import Consulting from '../database/models/Consulting';
 import Manager from '../database/models/Manager';
 
-import unis from './converter/universities';
+import unis from './rawData/universities';
 
 import dotenv from 'dotenv';
+import fs from 'file-system';
 
 // const MONGO_URI='mongodb://localhost/database';
 dotenv.config();
@@ -215,6 +216,27 @@ export async function getReviewRead(req, res) {
   }
 */
 
+function changeConsultingDateInfo(date_time) {
+    const monInd = date_time.indexOf('월');
+    const dateInd = date_time.indexOf('일');
+    const month = date_time.substring(0, monInd);
+    const date = date_time.substring(monInd+2, dateInd);
+    const time = date_time.substring(dateInd+2, date_time.length);
+
+    const dataBuffer = fs.readFileSync('src/controller/rawData/consultingDate.json');
+    const dataJSON = dataBuffer.toString();
+    const consultingDate = JSON.parse(dataJSON);
+
+    for(let timeData of consultingDate[month][date]) {
+        if(timeData.time === time){
+            timeData.valid = false;
+        }
+    }
+
+    fs.writeFileSync('src/controller/rawData/consultingDate.json', JSON.stringify(consultingDate, null, '\t'));
+
+}
+
 export async function postConsultingSave(req, res) {
     const {
         key,
@@ -256,12 +278,15 @@ export async function postConsultingSave(req, res) {
         date_time: date_time, 
         check: check, 
         account: account });
+
     newConsulting.save((err) => {
         if (err) {
             console.log(err);
             return res.status(200).json({
                 message: "fail: " + err
             });
+        }else{
+            changeConsultingDateInfo(date_time);
         }
     });
 
@@ -377,4 +402,21 @@ export async function getCheckAdmin2Code(req, res){
             message: "fail"
         });
     }
+}
+
+export async function getConsultingDate(req, res){
+    res.set("Access-Control-Allow-Origin", '*');
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res.set("Access-Control-Max-Age", "3600");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    res.set("Content-Type", "application/json");
+    res.set("Accept", "application/json");
+
+    const dataBuffer = fs.readFileSync('src/controller/rawData/consultingDate.json');
+    const dataJSON = dataBuffer.toString();
+
+    return res.json({
+        result: JSON.parse(dataJSON)
+    });
 }
