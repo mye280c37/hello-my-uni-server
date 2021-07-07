@@ -6,6 +6,7 @@ const EACH_CONVERTER = "/converter/each";
 const EDU_VIDEO = "/edu/contents/video";
 const REVIEW_BOARD = "/review/board";
 const REVIEW_POST = "/review/post";
+const REVIEW_DELETE = "/review/delete";
 
 // Contents
 const CONTENTS = "/contents";
@@ -38,6 +39,7 @@ const routes = {
     review_board: REVIEW_BOARD,
     review_post: REVIEW_POST,
     review_read: REVIEW_READ,
+    review_delete: REVIEW_DELETE,
     
     contents: CONTENTS,
 

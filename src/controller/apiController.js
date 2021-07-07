@@ -181,6 +181,61 @@ export async function getReviewRead(req, res) {
     return res.json(text);
 }
 
+export async function postReviewDelete(req, res) {
+    const {
+        id,
+        password
+    } = req.body;
+
+    res.set("Access-Control-Allow-Origin", '*');
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res.set("Access-Control-Max-Age", "3600");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    res.set("Content-Type", "application/json");
+    res.set("Accept", "application/json");
+
+
+    try {
+        const review = await Review.findById({_id:id}, (err, data) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+    
+            return data;
+        });
+        if (review) {
+            if(review.password === password){
+                await Review.deleteOne({_id:id}, (err, data) => {
+                    if (err) {
+                        console.log(err);
+                        return res.json({
+                            message: "fail",
+                            error: "database"
+                        });
+                    }
+    
+                    return res.json({
+                        message: "success"
+                    });
+                })
+            } else {
+                return res.json({
+                    message: "fail",
+                    error: "password"
+                });
+            }
+            
+        }
+    } catch (err) {
+        return res.json({
+            message: "fail",
+            error: "server"
+        });
+    }    
+}
+
 
 /*
 {

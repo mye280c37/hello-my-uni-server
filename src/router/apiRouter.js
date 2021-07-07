@@ -1,7 +1,7 @@
 import express from 'express';
 import routes from './routes';
 import { getEduVideo, getUpdateUni, getUniBoard, getConversion } from '../controller/apiController';
-import { getReviewBoard, postReviewPost , getReviewRead } from '../controller/apiController';
+import { getReviewBoard, postReviewPost , getReviewRead, postReviewDelete } from '../controller/apiController';
 import { postConsultingSave, getConsultingBoard, postConsultingUpdate } from '../controller/apiController';
 import { getCheckAdmin1Code, getCheckAdmin2Code} from '../controller/apiController';
 import { imageUpload } from '../controller/uploadImage';
@@ -22,6 +22,7 @@ apiRouter.get(routes.review_board, getReviewBoard);
 apiRouter.post(routes.review_post, postReviewPost);
 
 apiRouter.get(routes.review_read, getReviewRead);
+apiRouter.post(routes.review_delete, postReviewDelete);
 
 apiRouter.post(routes.consulting_create, postConsultingSave);
 apiRouter.get(routes.consulting_board, getConsultingBoard);
