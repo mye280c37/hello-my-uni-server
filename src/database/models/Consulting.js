@@ -50,7 +50,6 @@ const ConsultingSchema = new mongoose.Schema({
     average: { type: Number, required: true },
     option: { type: String, required:true }, // '/' 으로 항목 연결
     application: { type: String, required: true }, // '/' 으로 항목 연결
-    description: { type: String, default: '' },
     application_reason: { type: String, required: true },
     hope: {
       '1': { uni: String, major: String },
@@ -60,36 +59,15 @@ const ConsultingSchema = new mongoose.Schema({
       '5': { uni: String, major: String },
       '6': { uni: String, major: String }
     },
-    note: { type: String, default: ''},
-    date_time: { type: String, required: true }, // yyyy-MM-dd HH:mm-HH:mm
+    hope_reason: { type: String, default: ''},
+    note: { type: String, default: ''}, 
     check: { type: Number, required: true }, // 1
     account: { type: String, required: true },
-    comment: { type: String, default:'' },
-    payment: { type: Boolean, default: false }
+    comments:{ type: [{
+        date: String, // yyyy-MM-dd HH:mm-HH:mm
+        contents: String
+    }], default: [] }
 });
-
-ConsultingSchema.methods.findOrCreate = (key, name, age, gender, scores, average, application, application_reason, hope, note, date_time, check, account) => {
-    return Consulting.exists({ key }, (err, doc) => {
-        if (err) {
-            console.log(err);
-        } else {
-            if (doc === true) {
-                return Consulting.find({ key });
-            } else {
-                const Consulting = new Consulting(key, name, age, gender, scores, average, application, application_reason, hope, note, date_time, check, account);
-                Consulting.save()
-                    .catch(err => {
-                        console.log(err);
-                    })
-                return Consulting;
-            }
-        }
-    });
-}
-
-ConsultingSchema.methods.findAll = (type) => {
-    return Consulting.find({type});
-}
 
 const Consulting = mongoose.model("Consulting", ConsultingSchema);
 

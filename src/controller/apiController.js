@@ -2,7 +2,6 @@ import University from '../database/models/University';
 import Video from '../database/models/Video';
 import Review from '../database/models/Review';
 import Consulting from '../database/models/Consulting';
-import Manager from '../database/models/Manager';
 
 import unis from './rawData/universities';
 
@@ -282,9 +281,9 @@ function changeConsultingDateInfo(date_time) {
     const dataJSON = dataBuffer.toString();
     const consultingDate = JSON.parse(dataJSON);
 
-    for(let timeData of consultingDate[month][date]) {
-        if(timeData.time === time){
-            timeData.valid = false;
+    for(let i=0; i<consultingDate[month][date].length; i++){
+        if(consultingDate[month][date][i] === time){
+            consultingDate[month][date].splice(i, 1);
         }
     }
 
@@ -297,13 +296,14 @@ export async function postConsultingSave(req, res) {
         key,
         name, age, gender, phone,
         option,
-        application, description,
+        application,
         scores, // { 'korean', 'english', 'math', 'society', 'science', 'history', 'choice' }
         average, 
         application_reason, 
         hope, // {'uni', 'major'} 6개
-        note, date_time, // date_time: 'yyyy-MM-dd HH:mm-HH:mm'
-        check, account
+        hope_reason,
+        note, // 'yyyy-MM-dd HH:mm-HH:mm'
+        check, account, comments
     } = req.body;
 
     console.log(req.body);
@@ -324,15 +324,19 @@ export async function postConsultingSave(req, res) {
         phone: phone, 
         option: option, 
         application: application, 
-        description: description, 
         scores: scores, 
         average: average, 
         application_reason: application_reason, 
         hope: hope, 
+        hope_reason: hope_reason,
         note: note, 
-        date_time: date_time, 
         check: check, 
-        account: account });
+        account: account,
+        comments: {
+            date: comments[0].date,
+            contents: comments[0].contents
+        }
+     });
 
     newConsulting.save((err) => {
         if (err) {
@@ -341,7 +345,7 @@ export async function postConsultingSave(req, res) {
                 message: "fail: " + err
             });
         }else{
-            changeConsultingDateInfo(date_time);
+            changeConsultingDateInfo(comments[0].date);
         }
     });
 
@@ -377,7 +381,7 @@ export async function getConsultingBoard(req, res) {
 
 export async function postConsultingUpdate(req, res) {
     const {
-        id, comment, payment
+        id, date, contents, commentId
     } = req.body;
 
     console.log(req.body);
@@ -390,16 +394,41 @@ export async function postConsultingUpdate(req, res) {
     res.set("Content-Type", "application/json");
     res.set("Accept", "application/json");
 
-    try{
-        await Consulting.updateOne({ _id: id }, { comment: comment, payment: payment });
+    let targetConsulting = await Consulting.findById({_id:id}, (err, data) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+
+        return data;
+    });
+    if(targetConsulting !== null) {
+        let targetComment = targetConsulting.comments.id(commentId);
+        if( targetComment === null ) {
+            const comment = {
+                date: date,
+                contents: contents
+            };
+            if(targetConsulting.comments){
+                await Consulting.updateOne({ _id: id }, { $push: {comments: comment}});
+            }else{
+                await Consulting.updateOne({ _id: id }, { comments: [comment]});
+            }
+            return res.status(200).json({
+                message: "success"
+            });
+        }else {
+            targetComment.contents = contents;
+            targetConsulting.save();
+        }
         return res.status(200).json({
             message: "success"
-        });
-    } catch (error) {
-        console.log(error);
+        });   
+    }else {
         return res.json({
-            message: "fail"
-        });
+            message: "fail",
+            error: "no Object"
+        });  
     }
 }
 
@@ -473,5 +502,29 @@ export async function getConsultingDate(req, res){
 
     return res.json({
         result: JSON.parse(dataJSON)
+    });
+}
+
+export async function postConsultingDateAdd(req, res){
+    const {
+        month, date, timeList
+    } = req.body;
+
+    const dataBuffer = fs.readFileSync('src/controller/rawData/consultingDate.json');
+    const dataJSON = dataBuffer.toString();
+    const consultingDate = JSON.parse(dataJSON);
+
+    res.set("Access-Control-Allow-Origin", '*');
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res.set("Access-Control-Max-Age", "3600");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    res.set("Content-Type", "application/json");
+    res.set("Accept", "application/json");
+
+    consultingDate[month][date] = timeList;
+
+    return res.status(200).json({
+        message: "success"
     });
 }
