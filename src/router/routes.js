@@ -22,6 +22,8 @@ const UNI_BOARD = "/university/board";
 const CONSULTING_CREATE = "/consulting/create";
 const CONSULTING_BOARD = "/consulting/board";
 const CONSULTING_UPDATE = "/consulting/update";
+const COMMENT_UPDATE = "/comment/update";
+const COMMENT_DELETE = "/comment/delete";
 
 const CHECK_ADMIN1 = "/admin1/code";
 const CHECK_ADMIN2 = "/admin2/code";
@@ -51,6 +53,8 @@ const routes = {
     consulting_create: CONSULTING_CREATE,
     consulting_board: CONSULTING_BOARD,
     consulting_update: CONSULTING_UPDATE,
+    comment_update: COMMENT_UPDATE,
+    comment_delete: COMMENT_DELETE,
 
     check_admin1: CHECK_ADMIN1,
     check_admin2: CHECK_ADMIN2,

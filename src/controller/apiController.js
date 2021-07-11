@@ -432,6 +432,96 @@ export async function postConsultingUpdate(req, res) {
     }
 }
 
+export async function postCommentUpdate(req, res){
+    const {
+        id, commentId, contents
+    } = req.body;
+
+    res.set("Access-Control-Allow-Origin", '*');
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res.set("Access-Control-Max-Age", "3600");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    res.set("Content-Type", "application/json");
+    res.set("Accept", "application/json");
+
+    let targetConsulting = await Consulting.findById({_id:id}, (err, data) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+
+        return data;
+    });
+    if (targetConsulting) {
+        let targetComment = await targetConsulting.comments.id(commentId);
+        if(targetComment){
+            targetComment.contents = contents;
+            targetConsulting.save();
+
+            return res.status(200).json({
+                message: "success"
+            }); 
+        }
+        
+    }
+    return res.status(200).json({
+        message: "fail"
+    }); 
+}
+
+export async function postCommentDelete(req, res){
+    const {
+        id, commentId
+    } = req.body;
+
+    res.set("Access-Control-Allow-Origin", '*');
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res.set("Access-Control-Max-Age", "3600");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    res.set("Content-Type", "application/json");
+    res.set("Accept", "application/json");
+
+    let targetConsulting = await Consulting.findById({_id:id}, (err, data) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+
+        return data;
+    });
+    if (targetConsulting) {
+        if(targetConsulting.comments.length === 1){
+            let targetComment = await targetConsulting.comments.id(commentId);
+            if(targetComment){
+                targetComment.contents = '';
+                targetConsulting.save();
+
+                return res.status(200).json({
+                    message: "success"
+                }); 
+            }
+        }else{
+            try{
+                await Consulting.updateOne({_id:id}, {$pull:{comments:{_id:commentId}}});
+                return res.status(200).json({
+                    message: "success"
+                }); 
+            }
+            catch(err){
+                console.log(err);
+                return res.status(200).json({
+                    message: "fail"
+                }); 
+            }
+        }
+    }
+    return res.status(200).json({
+        message: "fail"
+    }); 
+}
+
 export async function getCheckAdmin1Code(req, res){
     res.set("Access-Control-Allow-Origin", '*');
     res.set("Access-Control-Allow-Credentials", "true");
