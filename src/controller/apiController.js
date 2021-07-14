@@ -1,7 +1,7 @@
 import University from '../database/models/University';
-import Video from '../database/models/Video';
 import Review from '../database/models/Review';
 import Consulting from '../database/models/Consulting';
+import ConsultingDate from '../database/models/ConsultingDate';
 
 import unis from './rawData/universities';
 
@@ -30,13 +30,6 @@ function str_to_int(req) {
     };
 }
 
-export async function getEduVideo (req, res) {
-    const result = await Video.find({});
-    return res.json({
-        result,
-        // message
-    });
-};
 
 export async function getUpdateUni(req, res) {
     for (var i in unis) {
@@ -270,25 +263,28 @@ export async function postReviewDelete(req, res) {
   }
 */
 
-function changeConsultingDateInfo(date_time) {
+async function changeConsultingDateInfo(date_time) {
     const monInd = date_time.indexOf('월');
     const dateInd = date_time.indexOf('일');
     const month = date_time.substring(0, monInd);
     const date = date_time.substring(monInd+2, dateInd);
     const time = date_time.substring(dateInd+2, date_time.length);
 
-    const dataBuffer = fs.readFileSync('src/controller/rawData/consultingDate.json');
-    const dataJSON = dataBuffer.toString();
-    const consultingDate = JSON.parse(dataJSON);
-
-    for(let i=0; i<consultingDate[month][date].length; i++){
-        if(consultingDate[month][date][i] === time){
-            consultingDate[month][date].splice(i, 1);
+    const targetConsultingDate = await ConsultingDate.findOne({month: month, date: date}, (err, data)=>{
+        if (err) {
+            console.log(err);
+            return;
         }
+
+        return data;
+    });
+    if(targetConsultingDate){
+        await ConsultingDate.updateOne({month: month, date: date}, {$pull:{timeList: time}});
+
+        return;
+    }else{
+        console.log('update consulting date error');
     }
-
-    fs.writeFileSync('src/controller/rawData/consultingDate.json', JSON.stringify(consultingDate, null, '\t'));
-
 }
 
 export async function postConsultingSave(req, res) {
@@ -587,22 +583,25 @@ export async function getConsultingDate(req, res){
     res.set("Content-Type", "application/json");
     res.set("Accept", "application/json");
 
-    const dataBuffer = fs.readFileSync('src/controller/rawData/consultingDate.json');
-    const dataJSON = dataBuffer.toString();
-
-    return res.json({
-        result: JSON.parse(dataJSON)
-    });
+    try {
+        const result = await ConsultingDate.find({});
+        const message = "Get ConsultingDate Success";
+        return res.json({
+            result,
+            message
+        });
+    } catch (error){
+        console.log(error);
+        return res.json({
+            message: "Get ConsultingDate Fail"
+        });
+    };
 }
 
 export async function postConsultingDateAdd(req, res){
     const {
         month, date, timeList
     } = req.body;
-
-    const dataBuffer = fs.readFileSync('src/controller/rawData/consultingDate.json');
-    const dataJSON = dataBuffer.toString();
-    const consultingDate = JSON.parse(dataJSON);
 
     res.set("Access-Control-Allow-Origin", '*');
     res.set("Access-Control-Allow-Credentials", "true");
@@ -612,9 +611,37 @@ export async function postConsultingDateAdd(req, res){
     res.set("Content-Type", "application/json");
     res.set("Accept", "application/json");
 
-    consultingDate[month][date] = timeList;
 
-    return res.status(200).json({
-        message: "success"
-    });
+    try {
+        let targetConsultingDate = await ConsultingDate.findOne({month: month, date: date}, (err, data) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+    
+            return data;
+        });
+
+        // targetConsultingDate.timeList.push(timeList);
+        targetConsultingDate.timeList = timeList;
+        targetConsultingDate.save();
+        return res.status(200).json({
+            message: "success"
+        });
+
+    } catch {
+        try {
+            const newConsultingDate = new ConsultingDate({month: month, date: date, timeList: timeList});
+            newConsultingDate.save();
+            return res.status(200).json({
+                message: "success"
+            });
+        } catch(err) {
+            console.log(err);
+            return res.status(200).json({
+                message: "fail"
+            });
+        }
+        
+    }
 }

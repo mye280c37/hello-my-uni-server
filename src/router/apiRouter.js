@@ -1,6 +1,6 @@
 import express from 'express';
 import routes from './routes';
-import { getEduVideo, getUpdateUni, getUniBoard, getConversion } from '../controller/apiController';
+import { getUpdateUni, getUniBoard, getConversion } from '../controller/apiController';
 import { getReviewBoard, postReviewPost , getReviewRead, postReviewDelete } from '../controller/apiController';
 import { postConsultingSave, getConsultingBoard, postConsultingUpdate } from '../controller/apiController';
 import { postCommentUpdate, postCommentDelete } from '../controller/apiController';
@@ -17,7 +17,6 @@ apiRouter.get(routes.each_converter, getConversion);
 apiRouter.get(routes.uni_info_update, getUpdateUni);
 apiRouter.get(routes.uni_board, getUniBoard);
 
-apiRouter.get(routes.edu_video, getEduVideo);
 apiRouter.get(routes.review_board, getReviewBoard);
 
 apiRouter.post(routes.review_post, postReviewPost);
