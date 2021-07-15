@@ -6,7 +6,7 @@ import { postConsultingSave, getConsultingBoard, postConsultingUpdate } from '..
 import { postCommentUpdate, postCommentDelete } from '../controller/apiController';
 import { getCheckAdmin1Code, getCheckAdmin2Code} from '../controller/apiController';
 import { imageUpload } from '../controller/uploadImage';
-import { getConsultingDate } from '../controller/apiController';
+import { getConsultingDate, postConsultingDateAdd } from '../controller/apiController';
 import 'mongoose-function';
 
 // '/api/'로 시작
@@ -36,5 +36,6 @@ apiRouter.get(routes.check_admin2, getCheckAdmin2Code);
 apiRouter.post(routes.image_upload, imageUpload);
 
 apiRouter.get(routes.consulting_date, getConsultingDate);
+apiRouter.post(routes.consulting_date_add, postConsultingDateAdd);
 
 export default apiRouter;
