@@ -629,7 +629,7 @@ export async function postConsultingDateAdd(req, res){
             message: "success"
         });
 
-    } catch {
+    } catch(err) {
         try {
             const newConsultingDate = new ConsultingDate({month: month, date: date, timeList: timeList});
             newConsultingDate.save();
