@@ -30,6 +30,9 @@ const ConsultingSchema = new mongoose.Schema({
     hope_reason: { type: String, default: ''},
     note: { type: String, default: ''}, 
     check: { type: Number, required: true }, // 1
+    exam2SubjectName: { type: String, default: ''}, 
+    examMon6Result: { type: String, default: ''}, 
+    fileSendCheck: { type: Boolean, required: true },
     account: { type: String, required: true },
     comments:{ type: [{
         date: String, // yyyy-MM-dd HH:mm-HH:mm

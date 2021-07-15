@@ -6,7 +6,6 @@ import ConsultingDate from '../database/models/ConsultingDate';
 import unis from './rawData/universities';
 
 import dotenv from 'dotenv';
-import fs from 'file-system';
 
 // const MONGO_URI='mongodb://localhost/database';
 dotenv.config();
@@ -299,7 +298,8 @@ export async function postConsultingSave(req, res) {
         hope, // {'uni', 'major'} 6개
         hope_reason,
         note, // 'yyyy-MM-dd HH:mm-HH:mm'
-        check, account, comments
+        check, exam2SubjectName, examMon6Result, fileSendCheck,
+        account, comments
     } = req.body;
 
     console.log(req.body);
@@ -326,7 +326,10 @@ export async function postConsultingSave(req, res) {
         hope: hope, 
         hope_reason: hope_reason,
         note: note, 
-        check: check, 
+        check: check,
+        exam2SubjectName: exam2SubjectName, 
+        examMon6Result: examMon6Result, 
+        fileSendCheck: fileSendCheck, 
         account: account,
         comments: {
             date: comments[0].date,
