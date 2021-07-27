@@ -299,7 +299,7 @@ export async function postConsultingSave(req, res) {
         hope_reason,
         note, // 'yyyy-MM-dd HH:mm-HH:mm'
         check, exam2SubjectName, examMon6Result, fileSendCheck,
-        account, comments
+        route, account, comments
     } = req.body;
 
     console.log(req.body);
@@ -329,7 +329,8 @@ export async function postConsultingSave(req, res) {
         check: check,
         exam2SubjectName: exam2SubjectName, 
         examMon6Result: examMon6Result, 
-        fileSendCheck: fileSendCheck, 
+        fileSendCheck: fileSendCheck,
+        route: route, 
         account: account,
         comments: {
             date: comments[0].date,
@@ -363,12 +364,31 @@ export async function getConsultingBoard(req, res) {
     res.set("Accept", "application/json");
     
     try {
-        const result = await Consulting.find({});
-        const message = "success";
-        
-        return res.json({
-            result,
-            message
+        const allConsulting = await Consulting.find({}, (err, docs)=>{
+            if(err){
+                console.log(error);
+                return res.json({
+                    message: "fail"
+                });
+            }
+
+            if(docs){
+                var result = [];
+                for (var consulting of docs){
+                    result.push({
+                        id: consulting._id,
+                        key: consulting.key,
+                        name: consulting.name,
+                        age: consulting.age,
+                        gender: consulting.gender,
+                        phone: consulting.phone
+                    });
+                }
+                return res.json({
+                    result,
+                    message: "success"
+                });
+            }
         });
     } catch (error){
         console.log(error);
@@ -377,6 +397,44 @@ export async function getConsultingBoard(req, res) {
         });
     };
 }
+
+export async function postConsultingRead(req, res) {
+    const {
+        key
+    } = req.body;
+
+    // var ip = request.getHeader("X-FORWARDED-FOR");
+    // if (ip == null)
+    //     ip = request.getRemoteAddr();
+
+    // console.log(ip);
+
+    res.set("Access-Control-Allow-Origin", '*');
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res.set("Access-Control-Max-Age", "3600");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    res.set("Content-Type", "application/json");
+    res.set("Accept", "application/json");
+
+    await Consulting.find({key:key}, (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(200).json({
+                message: "fail",
+                error: "fail to find target Consulting"
+            });
+        }
+        if(data){
+            return res.status(200).json({
+                result: data,
+                message: "success"
+            });
+        }
+    });
+} 
+
+
 
 export async function postConsultingUpdate(req, res) {
     const {

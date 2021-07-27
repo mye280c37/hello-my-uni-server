@@ -19,6 +19,7 @@ const UNI_BOARD = "/university/board";
 // Save Consulting Request
 const CONSULTING_CREATE = "/consulting/create";
 const CONSULTING_BOARD = "/consulting/board";
+const CONSULTING_READ = "/consulting/read";
 const CONSULTING_UPDATE = "/consulting/update";
 const COMMENT_UPDATE = "/comment/update";
 const COMMENT_DELETE = "/comment/delete";
@@ -48,6 +49,7 @@ const routes = {
 
     consulting_create: CONSULTING_CREATE,
     consulting_board: CONSULTING_BOARD,
+    consulting_read: CONSULTING_READ,
     consulting_update: CONSULTING_UPDATE,
     comment_update: COMMENT_UPDATE,
     comment_delete: COMMENT_DELETE,

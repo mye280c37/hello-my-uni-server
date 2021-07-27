@@ -2,7 +2,7 @@ import express from 'express';
 import routes from './routes';
 import { getUpdateUni, getUniBoard, getConversion } from '../controller/apiController';
 import { getReviewBoard, postReviewPost , getReviewRead, postReviewDelete } from '../controller/apiController';
-import { postConsultingSave, getConsultingBoard, postConsultingUpdate } from '../controller/apiController';
+import { postConsultingSave, getConsultingBoard, postConsultingRead, postConsultingUpdate } from '../controller/apiController';
 import { postCommentUpdate, postCommentDelete } from '../controller/apiController';
 import { getCheckAdmin1Code, getCheckAdmin2Code} from '../controller/apiController';
 import { imageUpload } from '../controller/uploadImage';
@@ -26,6 +26,7 @@ apiRouter.post(routes.review_delete, postReviewDelete);
 
 apiRouter.post(routes.consulting_create, postConsultingSave);
 apiRouter.get(routes.consulting_board, getConsultingBoard);
+apiRouter.post(routes.consulting_read, postConsultingRead);
 apiRouter.post(routes.consulting_update, postConsultingUpdate);
 apiRouter.post(routes.comment_update, postCommentUpdate);
 apiRouter.post(routes.comment_delete, postCommentDelete);
