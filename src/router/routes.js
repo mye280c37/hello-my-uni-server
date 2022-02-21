@@ -32,6 +32,12 @@ const IMAGE_UPLOAD = "/upload";
 const CONSULTING_DATE = "/consulting/date";
 const CONSULTING_DATE_ADD = "/consulting/date/add";
 
+// Description
+const DESCRIPTION_CREATE = "/description/create";
+const DESCRIPTION_LIST = "/description/list";
+const DESCRIPTION_RETRIEVE = "/description/retrieve";
+const DESCRIPTION_UPDATE = "/description/update";
+
 const routes = {
     home: HOME,
 
@@ -60,7 +66,12 @@ const routes = {
     image_upload: IMAGE_UPLOAD,
 
     consulting_date: CONSULTING_DATE,
-    consulting_date_add: CONSULTING_DATE_ADD
+    consulting_date_add: CONSULTING_DATE_ADD,
+
+    description_create: DESCRIPTION_CREATE,
+    description_list: DESCRIPTION_LIST,
+    description_retrieve: DESCRIPTION_RETRIEVE,
+    description_update: DESCRIPTION_UPDATE
 };
 
 export default routes; 

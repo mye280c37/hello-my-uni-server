@@ -2,6 +2,7 @@ import University from '../database/models/University';
 import Review from '../database/models/Review';
 import Consulting from '../database/models/Consulting';
 import ConsultingDate from '../database/models/ConsultingDate';
+import Description from '../database/models/Description';
 
 import unis from './rawData/universities';
 
@@ -341,8 +342,9 @@ export async function postConsultingSave(req, res) {
     newConsulting.save((err) => {
         if (err) {
             console.log(err);
-            return res.status(200).json({
-                message: "fail: " + err
+            return res.status(400).json({
+                message: "fail",
+                error: err
             });
         }else{
             changeConsultingDateInfo(comments[0].date);
@@ -579,7 +581,11 @@ export async function postCommentDelete(req, res){
     }); 
 }
 
-export async function getCheckAdmin1Code(req, res){
+export async function postCheckAdmin1Code(req, res){
+    const {
+        key
+    } = req.body;
+
     res.set("Access-Control-Allow-Origin", '*');
     res.set("Access-Control-Allow-Credentials", "true");
     res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
@@ -588,7 +594,7 @@ export async function getCheckAdmin1Code(req, res){
     res.set("Content-Type", "application/json");
     res.set("Accept", "application/json");
 
-    if(req.query.key == process.env.ADMIN1){
+    if(key == process.env.ADMIN1){
         return res.json({
             message: "success"
         });
@@ -597,25 +603,14 @@ export async function getCheckAdmin1Code(req, res){
             message: "fail"
         });
     }
-
-    // try {
-    //     const result = await Manager.find({});
-    //     const message = "success";
-
-    //     return res.json({
-    //         result,
-    //         message
-    //     });
-    // }catch (error){
-    //     console.log(error);
-    //     return res.json({
-    //         message: "fail"
-    //     });
-    // };
 }
 
 
-export async function getCheckAdmin2Code(req, res){
+export async function postCheckAdmin2Code(req, res){
+    const {
+        key
+    } = req.body;
+
     res.set("Access-Control-Allow-Origin", '*');
     res.set("Access-Control-Allow-Credentials", "true");
     res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
@@ -624,7 +619,7 @@ export async function getCheckAdmin2Code(req, res){
     res.set("Content-Type", "application/json");
     res.set("Accept", "application/json");
 
-    if(req.query.key == process.env.ADMIN2){
+    if(key == process.env.ADMIN2){
         return res.json({
             message: "success"
         });
@@ -654,7 +649,8 @@ export async function getConsultingDate(req, res){
     } catch (error){
         console.log(error);
         return res.json({
-            message: "Get ConsultingDate Fail"
+            message: "fail",
+            error: "Get ConsultingDate Fail"
         });
     };
 }
@@ -705,4 +701,149 @@ export async function postConsultingDateAdd(req, res){
         }
         
     }
+}
+
+export async function postDescriptionCreate(req, res){
+    const {
+        title, body, author, time
+    } = req.body;
+
+    res.set("Access-Control-Allow-Origin", '*');
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res.set("Access-Control-Max-Age", "3600");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    res.set("Content-Type", "application/json");
+    res.set("Accept", "application/json");
+
+    const newDescription = new Description({
+        title: title,
+        body: body,
+        author: author,
+        time: time
+    });
+
+    await newDescription.save((err) => {
+        if (err){
+            console.log(err);
+            return res.status(400).json({
+                message: "fail",
+                error: err
+            });
+        }
+    });
+
+    
+    return res.status(200).json({
+        message: "success"
+    });
+}
+
+export async function getDescriptionList(req, res){
+    res.set("Access-Control-Allow-Origin", '*');
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res.set("Access-Control-Max-Age", "3600");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    res.set("Content-Type", "application/json");
+    res.set("Accept", "application/json");
+
+    await Description.find({}, (err, docs)=>{
+        if(err){
+            console.log(err);
+            return res.staus(200).json({
+                message: "fail",
+                error: err
+            });
+        }
+
+        if(docs){
+            var result = [];
+            for (var description of docs){
+                result.push({
+                    id: description._id,
+                    title: description.title,
+                    author: description.author,
+                    time: description.time
+                });
+            }
+            return res.staus(200).json({
+                result,
+                message: "success"
+            });
+        }
+    });
+
+}
+
+export async function postDescriptionRetrieve(req, res){
+    const {
+        id
+    } = req.body;
+
+    res.set("Access-Control-Allow-Origin", '*');
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res.set("Access-Control-Max-Age", "3600");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    res.set("Content-Type", "application/json");
+    res.set("Accept", "application/json");
+
+    await Description.findById({_id:id}, (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(400).json({
+                error: err
+            });
+        }
+
+        if (data) {
+            return res.status(200).json({
+                result: data,
+                message: "success"
+            })
+        }
+    });
+}
+
+
+export async function postDescriptionUpdate(req, res){
+    const {
+        id, title, body, author, time
+    } = req.body;
+
+    const data = await Description.findById({_id:id}, (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(400).json({
+                message: "fail",
+                error: err
+            });
+        }
+
+        if (data) {
+            return data;
+        };
+    });
+
+    if (data) {
+        data.title = title;
+        data.body = body;
+        data.author = author;
+        data.time = time;
+        await data.save((err) => {
+            if (err){
+                console.log(err);
+                return res.status(200).json({
+                    message: "fail",
+                    error: "data update error"
+                });
+            }
+        });
+        return res.status(200).json({
+            result: data,
+            message: "success"
+        });
+    };
+
 }
